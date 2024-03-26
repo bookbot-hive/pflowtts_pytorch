@@ -16,6 +16,7 @@ import re
 
 import phonemizer
 from unidecode import unidecode
+from gruut import sentences
 
 # To avoid excessive logging we set the log level of the phonemizer package to Critical
 critical_logger = logging.getLogger("phonemizer")
@@ -102,4 +103,17 @@ def english_cleaners2(text):
     text = expand_abbreviations(text)
     phonemes = global_phonemizer.phonemize([text], strip=True, njobs=1)[0]
     phonemes = collapse_whitespace(phonemes)
+    return phonemes
+
+def english_cleaners3(text):
+    """Pipeline for English text, including phonemization + punctuation"""
+
+    phonemizer = lambda s: [
+        [word.text] if word.is_major_break or word.is_minor_break else word.phonemes
+        for words in sentences(s)
+        for word in words
+    ]
+
+    phonemes = phonemizer(text)
+    phonemes = "# #".join(["#".join(phn) for phn in phonemes])
     return phonemes

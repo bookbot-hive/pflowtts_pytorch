@@ -3,15 +3,83 @@
 Defines the set of symbols used in text input to the model.
 """
 _pad = "_"
-_punctuation = ';:,.!?¡¿—…"«»“” '
-_letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-_letters_ipa = (
-    "ɑɐɒæɓʙβɔɕçɗɖðʤəɘɚɛɜɝɞɟʄɡɠɢʛɦɧħɥʜɨɪʝɭɬɫɮʟɱɯɰŋɳɲɴøɵɸθœɶʘɹɺɾɻʀʁɽʂʃʈʧʉʊʋⱱʌɣɤʍχʎʏʑʐʒʔʡʕʢǀǁǂǃˈˌːˑʼʴʰʱʲʷˠˤ˞↓↑→↗↘'̩'ᵻ"
-)
+_punctuation = ';:,.!? '
+_letters_ipa = [
+    "aɪ",
+    "aʊ",
+    "b",
+    "d",
+    "d͡ʒ",
+    "eɪ",
+    "f",
+    "h",
+    "i",
+    "j",
+    "k",
+    "l",
+    "m",
+    "n",
+    "oʊ",
+    "p",
+    "s",
+    "t",
+    "t͡ʃ",
+    "u",
+    "v",
+    "w",
+    "z",
+    "æ",
+    "ð",
+    "ŋ",
+    "ɑ",
+    "ɔ",
+    "ɔɪ",
+    "ə",
+    "ɚ",
+    "ɛ",
+    "ɡ",
+    "ɪ",
+    "ɹ",
+    "ʃ",
+    "ʊ",
+    "ʌ",
+    "ʒ",
+    "ˈaɪ",
+    "ˈaʊ",
+    "ˈeɪ",
+    "ˈi",
+    "ˈoʊ",
+    "ˈu",
+    "ˈæ",
+    "ˈɑ",
+    "ˈɔ",
+    "ˈɔɪ",
+    "ˈɚ",
+    "ˈɛ",
+    "ˈɪ",
+    "ˈʊ",
+    "ˈʌ",
+    "ˌaɪ",
+    "ˌaʊ",
+    "ˌeɪ",
+    "ˌi",
+    "ˌoʊ",
+    "ˌu",
+    "ˌæ",
+    "ˌɑ",
+    "ˌɔ",
+    "ˌɔɪ",
+    "ˌɚ",
+    "ˌɛ",
+    "ˌɪ",
+    "ˌʊ",
+    "ˌʌ",
+    "θ",
+]
 
 
 # Export all symbols:
-symbols = [_pad] + list(_punctuation) + list(_letters) + list(_letters_ipa)
+symbols = [_pad] + list(_punctuation) + _letters_ipa
 
 # Special symbol ids
 SPACE_ID = symbols.index(" ")

@@ -6,7 +6,7 @@ defaults:
   - optimizer: adam.yaml
 
 _target_: pflow.models.pflow_tts.pflowTTS
-n_vocab: 178
+n_vocab: 78
 n_spks: ${data.n_spks}
 spk_emb_dim: 64
 n_feats: 80

@@ -6,7 +6,7 @@ import torchaudio as ta
 from lightning import LightningDataModule
 from torch.utils.data.dataloader import DataLoader
 
-from pflow.text import text_to_sequence
+from pflow.text import text_to_sequence, cleaned_text_to_sequence
 from pflow.utils.audio import mel_spectrogram
 from pflow.utils.model import fix_len_compatibility, normalize
 from pflow.utils.utils import intersperse
@@ -193,7 +193,7 @@ class TextMelDataset(torch.utils.data.Dataset):
         return mel, audio
 
     def get_text(self, text, add_blank=True):
-        text_norm = text_to_sequence(text, self.cleaners)
+        text_norm = cleaned_text_to_sequence(text)
         if self.add_blank:
             text_norm = intersperse(text_norm, 0)
         text_norm = torch.IntTensor(text_norm)
