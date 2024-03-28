@@ -1,22 +1,22 @@
 _target_: pflow.data.text_mel_datamodule.TextMelDataModule
 name: ljspeech
-train_filelist_path: data/filelists/ljs_audio_text_train_filelist.txt
-valid_filelist_path: data/filelists/ljs_audio_text_val_filelist.txt
+train_filelist_path: data/LJSpeech-1.1/filelists/ljs_audio_text_train_filelist.txt
+valid_filelist_path: data/LJSpeech-1.1/filelists/ljs_audio_text_val_filelist.txt
 batch_size: 32
-num_workers: 20
+num_workers: 18
 pin_memory: True
-cleaners: [english_cleaners2]
+cleaners: [english_cleaners3]
 add_blank: True
 n_spks: 1
-n_fft: 1024
+n_fft: 2048
 n_feats: 80
-sample_rate: 22050
-hop_length: 256
-win_length: 1024
+sample_rate: 44100
+hop_length: 512
+win_length: 2048
 f_min: 0
-f_max: 8000
+f_max: 11025
 data_statistics:  # Computed for ljspeech dataset
-  mel_mean: -5.536622
-  mel_std: 2.116101
+  mel_mean: -4.988495826721191
+  mel_std: 2.135089874267578
 seed: ${seed}
 min_sample_size: 4
