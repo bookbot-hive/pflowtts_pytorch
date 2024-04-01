@@ -193,6 +193,7 @@ class TextMelDataset(torch.utils.data.Dataset):
         return mel, audio
 
     def get_text(self, text, add_blank=True):
+        # text_norm = text_to_sequence(text, self.cleaners)
         text_norm = cleaned_text_to_sequence(text)
         if self.add_blank:
             text_norm = intersperse(text_norm, 0)

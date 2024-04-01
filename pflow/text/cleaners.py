@@ -105,9 +105,10 @@ def english_cleaners2(text):
     phonemes = collapse_whitespace(phonemes)
     return phonemes
 
+
 def english_cleaners3(text):
     """Pipeline for English text, including phonemization + punctuation"""
-
+    punctuations = list(";:,.!?")
     phonemizer = lambda s: [
         [word.text] if word.is_major_break or word.is_minor_break else word.phonemes
         for words in sentences(s)
@@ -115,5 +116,7 @@ def english_cleaners3(text):
     ]
 
     phonemes = phonemizer(text)
-    phonemes = "# #".join(["#".join(phn) for phn in phonemes])
+    phonemes = " ".join(["".join(phn) for phn in phonemes])
+    for p in punctuations:
+        phonemes = phonemes.replace(f" {p}", p)
     return phonemes

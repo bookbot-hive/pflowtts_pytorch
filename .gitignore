@@ -7,3 +7,4 @@ build
 *.c
 pflow/utils/monotonic_align/
 en_au_dean2zak
+data/LJSpeech-1.1/

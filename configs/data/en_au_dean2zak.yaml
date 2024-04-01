@@ -15,8 +15,8 @@ hop_length: 512
 win_length: 2048
 f_min: 0
 f_max: 11025
-data_statistics:  # Computed for ljspeech dataset
-  mel_mean: -5.7935943603515625
-  mel_std: 2.965059280395508
+data_statistics:
+  mel_mean: -5.771288871765137
+  mel_std: 2.9530909061431885
 seed: ${seed}
 min_sample_size: 4
