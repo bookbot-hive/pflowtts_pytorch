@@ -44,7 +44,7 @@ def write_wavs(model, inputs, output_dir, external_vocoder=None):
         wavs = external_vocoder.run(None, vocoder_inputs)[0]
         vocoder_infer_secs = perf_counter() - vocoder_t0
         wavs = wavs.squeeze(1)
-        wav_lengths = mel_lengths * 256
+        wav_lengths = mel_lengths * 512
         infer_secs = mel_infer_secs + vocoder_infer_secs
 
     output_dir = Path(output_dir)
@@ -53,9 +53,9 @@ def write_wavs(model, inputs, output_dir, external_vocoder=None):
         output_filename = output_dir.joinpath(f"output_{i + 1}.wav")
         audio = wav[:wav_length]
         print(f"Writing audio to {output_filename}")
-        sf.write(output_filename, audio, 22050, "PCM_24")
+        sf.write(output_filename, audio, 44100, "PCM_24")
 
-    wav_secs = wav_lengths.sum() / 22050
+    wav_secs = wav_lengths.sum() / 44100
     print(f"Inference seconds: {infer_secs}")
     print(f"Generated wav seconds: {wav_secs}")
     rtf = infer_secs / wav_secs
@@ -80,7 +80,7 @@ def write_mels(model, inputs, output_dir):
         plot_spectrogram_to_numpy(mel.squeeze(), output_stem.with_suffix(".png"))
         np.save(output_stem.with_suffix(".numpy"), mel)
 
-    wav_secs = (mel_lengths * 256).sum() / 22050
+    wav_secs = (mel_lengths * 512).sum() / 44100
     print(f"Inference seconds: {infer_secs}")
     print(f"Generated wav seconds: {wav_secs}")
     rtf = infer_secs / wav_secs
@@ -126,7 +126,7 @@ def main():
     args = validate_args(args)
 
     if args.gpu:
-        providers = ["GPUExecutionProvider"]
+        providers = ["CUDAExecutionProvider"]
     else:
         providers = ["CPUExecutionProvider"]
     model = ort.InferenceSession(args.model, providers=providers)
@@ -151,13 +151,13 @@ def main():
     prompt_wav, sr = torchaudio.load(wav_file)
     prompt = mel_spectrogram(
             prompt_wav,
-            1024,
+            2048,
             80,
-            22050,
-            256,
-            1024,
+            44100,
+            512,
+            2048,
             0,
-            8000,
+            11025,
             center=False,
         )
     

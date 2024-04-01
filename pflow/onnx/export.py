@@ -32,7 +32,7 @@ class PflowWithVocoder(LightningModule):
     def forward(self, x, x_lengths, prompt, scales):
         mel, mel_lengths = self.pflow(x, x_lengths, prompt, scales)
         wavs = self.vocoder(mel).clamp(-1, 1)
-        lengths = mel_lengths * 256
+        lengths = mel_lengths * 512
         return wavs.squeeze(1), lengths
 
 
@@ -77,7 +77,7 @@ def get_inputs():
     """
     Create dummy inputs for tracing
     """
-    dummy_input_length = 50
+    dummy_input_length = 200
     x = torch.randint(low=0, high=20, size=(1, dummy_input_length), dtype=torch.long)
     x_lengths = torch.LongTensor([dummy_input_length])
 

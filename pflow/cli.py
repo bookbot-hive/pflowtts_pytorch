@@ -9,7 +9,7 @@ import numpy as np
 import soundfile as sf
 import torch
 
-from pflow.hifigan.config import v1
+from pflow.hifigan.config import v1, v4
 from pflow.hifigan.denoiser import Denoiser
 from pflow.hifigan.env import AttrDict
 from pflow.hifigan.models import Generator as HiFiGAN
@@ -22,6 +22,7 @@ PFLOW_URLS = {}
 VOCODER_URLS = {
     "hifigan_T2_v1": "https://drive.google.com/file/d/14NENd4equCBLyyCSke114Mv6YR_j_uFs/view?usp=drive_link",
     "hifigan_univ_v1": "https://drive.google.com/file/d/1qpgI41wNXFcH-iKq1Y42JlBC9j0je8PW/view?usp=drive_link",
+    "hifigan_v4": "",
 }
 
 MULTISPEAKER_MODEL = {}
@@ -43,7 +44,7 @@ def plot_spectrogram_to_numpy(spectrogram, filename):
 def process_text(i: int, text: str, device: torch.device):
     print(f"[{i}] - Input text: {text}")
     x = torch.tensor(
-        intersperse(text_to_sequence(text, ["english_cleaners2"]), 0),
+        intersperse(text_to_sequence(text, ["english_cleaners3"]), 0),
         dtype=torch.long,
         device=device,
     )[None]
@@ -85,11 +86,22 @@ def load_hifigan(checkpoint_path, device):
     return hifigan
 
 
+def load_hifigan_v4(checkpoint_path, device):
+    h = AttrDict(v4)
+    hifigan = HiFiGAN(h).to(device)
+    hifigan.load_state_dict(torch.load(checkpoint_path, map_location=device)["generator"])
+    _ = hifigan.eval()
+    hifigan.remove_weight_norm()
+    return hifigan
+
+
 def load_vocoder(vocoder_name, checkpoint_path, device):
     print(f"[!] Loading {vocoder_name}!")
     vocoder = None
     if vocoder_name in ("hifigan_T2_v1", "hifigan_univ_v1"):
         vocoder = load_hifigan(checkpoint_path, device)
+    elif vocoder_name in ("hifigan_v4"):
+        vocoder = load_hifigan_v4(checkpoint_path, device)
     else:
         raise NotImplementedError(
             f"Vocoder {vocoder_name} not implemented! define a load_<<vocoder_name>> method for it"
